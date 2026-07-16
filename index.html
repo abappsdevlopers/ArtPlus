@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ArtPulse VIP | استوديو الهوية الفنية المحترف</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght=300;400;600;700;900&family=Reem+Kufi:wght=500;700&display=swap');
+        
+        body { 
+            background-color: #02040a; 
+            color: #f3f4f6; 
+            -webkit-tap-highlight-color: transparent; 
+            overflow-y: auto;
+        }
+        
+        .font-cairo { font-family: 'Cairo', sans-serif !important; }
+        .font-kufi { font-family: 'Reem Kufi', sans-serif !important; }
+        
+        .bg-luxury-dark { background: radial-gradient(circle at center, #0f1123 0%, #02040a 100%) !important; }
+        .bg-studio { background-image: linear-gradient(to bottom, rgba(2,4,10,0.85), rgba(2,4,10,0.98)), url('https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800') !important; background-size: cover !important; background-position: center !important; }
+        .bg-neon-pulse { background: radial-gradient(circle at top right, #1e0b36 0%, #02040a 100%) !important; }
+        .bg-gold-glow { background: radial-gradient(circle at top, #1c140e 0%, #02040a 100%) !important; }
+        .bg-vip-sauvage { background: radial-gradient(circle at top right, #151009 0%, #050402 60%, #000000 100%) !important; }
+        .bg-vip-cyber { background: linear-gradient(135deg, #050014 0%, #0b001a 50%, #020005 100%) !important; }
+        
+        .fx-glass { background: rgba(255, 255, 255, 0.03) !important; backdrop-filter: blur(20px) !important; border: 1px solid rgba(255,255,255,0.08) !important; }
+        .fx-neon { background-color: #000000 !important; border: 1px solid #a855f7 !important; box-shadow: 0 0 15px rgba(168,85,247,0.2) !important; }
+        .fx-solid { background-color: #111827 !important; border: 1px solid #1f2937 !important; }
+        
+        .link-featured-glow { animation: pulseGlow 2s infinite ease-in-out; border: 1px solid #d4af37 !important; background: linear-gradient(90deg, rgba(20,16,8,0.6) 0%, rgba(40,32,15,0.6) 100%) !important; }
+        @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 5px rgba(212,175,55,0.2); } 50% { box-shadow: 0 0 18px rgba(212,175,55,0.45); } }
+
+        .aurora-bg {
+            position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+            background: radial-gradient(circle at 50% -20%, rgba(147,51,234,0.1) 0%, rgba(0,0,0,0) 60%);
+            pointer-events: none; z-index: -1;
+        }
+        .scrollbar-none::-webkit-scrollbar { display: none !important; }
+        .scrollbar-none { -ms-overflow-style: none !important; scrollbar-width: none !important; }
+    </style>
+</head>
+<body class="min-h-screen relative flex flex-col justify-between overflow-x-hidden pb-20 lg:pb-0 font-cairo">
+
+    <div class="aurora-bg"></div>
+
+    <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 space-y-2 w-full max-w-sm px-4 pointer-events-none"></div>
+
+    <div id="loading-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#02040a]">
+        <div class="text-center space-y-3">
+            <i class="fas fa-circle-notch animate-spin text-purple-500 text-4xl"></i>
+            <p id="loading-text" class="text-[11px] tracking-widest text-gray-400 font-bold">جاري تحميل الاستوديو الرقمي المشفر...</p>
+        </div>
+    </div>
+
+    <header class="w-full bg-gray-950/80 border-b border-gray-900/40 px-5 py-4 flex justify-between items-center z-40 sticky top-0 backdrop-blur-md">
+        <div class="flex items-center gap-2">
+            <span class="inline-block w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
+            <span class="text-purple-400 font-black text-xs tracking-wider">ARTPULSE VIP</span>
+        </div>
+        <div id="admin-top-actions" class="hidden flex items-center gap-3">
+            <button id="btn-logout" class="bg-red-950/40 hover:bg-red-900/60 border border-red-900/30 px-3 py-1.5 rounded-xl text-red-400 font-bold text-[11px] transition cursor-pointer">
+                <i class="fas fa-power-off ml-1"></i> خروج
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-grow w-full max-w-6xl mx-auto px-4 py-4 flex items-center justify-center">
+
+        <section id="home-view" class="hidden w-full max-w-sm text-center py-12 space-y-8">
+            <div class="space-y-4">
+                <div class="inline-flex items-center justify-center w-20 h-20 rounded-[2.5rem] bg-gradient-to-br from-purple-600 to-indigo-800 shadow-xl text-white text-3xl mx-auto">
+                    <i class="fas fa-sliders-h"></i>
+                </div>
+                <h1 class="text-4xl font-black text-white">ArtPulse</h1>
+                <p class="text-xs text-gray-400 max-w-xs mx-auto leading-relaxed">منصتك الاحترافية المتقدمة لجمع وإدارة روابط وثيماتك الفنية السحابية بهيبة مخصصة.</p>
+            </div>
+            <button id="btn-google-login" class="w-full bg-white text-gray-950 font-bold py-4 px-6 rounded-2xl flex items-center justify-center gap-3 shadow-lg active:scale-98 transition text-xs cursor-pointer">
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google">
+                <span>الوصول الآمن باستخدام Google</span>
+            </button>
+        </section>
+
+        <section id="admin-view" class="hidden w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <div class="lg:col-span-7 bg-gray-950/40 border border-gray-900/60 lg:rounded-[2rem] rounded-2xl p-5 space-y-6 backdrop-blur-xl w-full">
+                
+                <div class="border-b border-gray-900/60 pb-4 space-y-2">
+                    <h2 class="text-base font-black text-white flex items-center gap-2">
+                        <i class="fas fa-fingerprint text-purple-500"></i> التحكم بالاعدادات والمظهر
+                    </h2>
+                    <div class="bg-black/50 px-3 py-3 border border-gray-900 rounded-xl flex items-center justify-between gap-2" dir="ltr">
+                        <span id="adm-generated-url" class="text-[11px] text-purple-400 font-bold truncate max-w-[80%]">جاري التوليد...</span>
+                        <button id="btn-copy-link" class="text-gray-400 hover:text-white transition cursor-pointer"><i class="far fa-copy text-xs"></i></button>
+                    </div>
+                </div>
+
+                <div id="links-tab" class="space-y-4 app-tab-content">
+                    <div class="space-y-3">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <input type="text" id="adm-link-title" placeholder="اسم المنصة (مثال: Spotify, YouTube)" class="w-full bg-black/40 border border-gray-900 p-3.5 rounded-xl text-xs text-white focus:outline-none focus:border-purple-600">
+                            <select id="adm-link-icon" class="w-full bg-black/80 border border-gray-900 p-3.5 rounded-xl text-xs text-gray-300 focus:outline-none focus:border-purple-600">
+                                <option value="fa-bolt">⚡ أيقونة افتراضية (صاعقة)</option>
+                                <option value="fa-spotify">🎵 سبوتيفاي (Spotify)</option>
+                                <option value="fa-youtube">▶️ يوتيوب (YouTube)</option>
+                                <option value="fa-soundcloud">☁️ ساوند كلاود (SoundCloud)</option>
+                                <option value="fa-tiktok">📱 تيك توك (TikTok)</option>
+                                <option value="fa-instagram">📸 إنستغرام (Instagram)</option>
+                                <option value="fa-link">🔗 رابط خارجي عام</option>
+                            </select>
+                        </div>
+                        <input type="url" id="adm-link-url" placeholder="ضع رابط الـ URL الفعلي هنا" class="w-full bg-black/40 border border-gray-900 p-3.5 rounded-xl text-xs text-white focus:outline-none focus:border-purple-600 text-left" dir="ltr">
+                        
+                        <div class="flex items-center gap-2 bg-purple-950/20 p-3 border border-purple-900/30 rounded-xl">
+                            <input type="checkbox" id="adm-link-featured" class="w-4 h-4 rounded text-purple-600 bg-black border-gray-800 focus:ring-purple-500">
+                            <label for="adm-link-featured" class="text-[11px] font-bold text-purple-300 cursor-pointer flex items-center gap-1">
+                                <i class="fas fa-crown text-[10px] text-amber-400"></i> تمييز هذا الرابط (توهج مشع لجلب الانتباه)
+                            </label>
+                        </div>
+                    </div>
+                    <button id="btn-add-link" class="w-full bg-purple-600 text-white font-bold py-3.5 rounded-xl text-xs transition active:scale-98 cursor-pointer">إدراج وتثبيت الرابط بالمنصة</button>
+                    
+                    <div class="space-y-2">
+                        <h4 class="text-[10px] font-bold text-gray-500 tracking-wider">الروابط النشطة حالياً بالتطبيق:</h4>
+                        <div id="admin-links-list" class="space-y-2 max-h-[180px] overflow-y-auto scrollbar-none"></div>
+                    </div>
+                </div>
+
+                <div id="design-tab" class="hidden app-tab-content space-y-5">
+                    <div class="space-y-2">
+                        <h4 class="text-[11px] font-bold text-gray-400"><i class="fas fa-palette ml-1 text-purple-500"></i> 1. المظهر الجمالي العام</h4>
+                        <div class="grid grid-cols-2 gap-2 text-[11px]">
+                            <button id="wp-luxury" class="p-3.5 rounded-xl bg-gray-900 border border-gray-800 text-gray-300 font-semibold text-right cursor-pointer">ظلام ملكي كلاسيك</button>
+                            <button id="wp-studio" class="p-3.5 rounded-xl bg-slate-800 border border-gray-700 text-white font-semibold text-right cursor-pointer">استوديو لايف</button>
+                            <button id="wp-neon" class="p-3.5 rounded-xl bg-purple-950/40 border border-purple-900/40 text-purple-300 font-semibold text-right cursor-pointer">نبض النيون</button>
+                            <button id="wp-gold" class="p-3.5 rounded-xl bg-amber-950/20 border border-amber-900/20 text-amber-300 font-semibold text-right cursor-pointer">وهج الذهب</button>
+                            
+                            <button id="wp-vip-sauvage" class="p-3.5 rounded-xl bg-[#151009] border border-[#d4af37]/30 text-[#d4af37] font-bold text-right cursor-pointer flex items-center justify-between">
+                                <span>أولد موني ساوفاج</span> <span class="text-[8px] bg-[#d4af37]/20 px-1 py-0.5 rounded text-[#d4af37]">VIP 💎</span>
+                            </button>
+                            <button id="wp-vip-cyber" class="p-3.5 rounded-xl bg-[#0b001a] border border-purple-500/30 text-purple-400 font-bold text-right cursor-pointer flex items-center justify-between">
+                                <span>سايبر لوكس نيون</span> <span class="text-[8px] bg-purple-500/20 px-1 py-0.5 rounded text-purple-400">VIP 💎</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h4 class="text-[11px] font-bold text-gray-400"><i class="fas fa-magic ml-1 text-purple-500"></i> 2. نمط وتأثير الأزرار</h4>
+                        <div class="grid grid-cols-3 gap-2 text-[11px]">
+                            <button id="fx-btn-solid" class="p-3 bg-gray-900 rounded-xl font-medium cursor-pointer">مصقول ثقيل</button>
+                            <button id="fx-btn-glass" class="p-3 bg-white/5 border border-white/10 rounded-xl font-medium cursor-pointer">مائي زجاجي</button>
+                            <button id="fx-btn-neon" class="p-3 bg-black border border-purple-600 rounded-xl text-purple-400 font-medium cursor-pointer">نيون مشع</button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h4 class="text-[11px] font-bold text-gray-400"><i class="fas fa-border-all ml-1 text-purple-500"></i> 3. زوايا وهندسة حواف الأزرار</h4>
+                        <div class="grid grid-cols-3 gap-2 text-[11px]">
+                            <button id="shape-btn-none" class="p-3 bg-black/40 border border-gray-900 rounded-none cursor-pointer">حادة كلاسيك</button>
+                            <button id="shape-btn-xl" class="p-3 bg-black/40 border border-gray-900 rounded-xl cursor-pointer">زوايا ناعمة</button>
+                            <button id="shape-btn-full" class="p-3 bg-black/40 border border-gray-900 rounded-full cursor-pointer">بيضاوي فخم</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="info-tab" class="hidden app-tab-content space-y-4">
+                    <div class="flex items-center gap-4 bg-black/40 p-4 border border-gray-900 rounded-xl">
+                        <div id="adm-avatar-trigger" class="relative w-16 h-16 rounded-full ring-2 ring-purple-500 overflow-hidden bg-gray-800 flex-shrink-0 cursor-pointer">
+                            <img id="adm-avatar-preview" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400" class="w-full h-full object-cover" alt="Avatar">
+                            <div class="absolute inset-0 bg-black/60 flex items-center justify-center text-[9px] font-bold">تغيير</div>
+                            <input type="file" id="avatar-file-input" class="hidden" accept="image/*">
+                        </div>
+                        <div class="text-right space-y-0.5">
+                            <span class="text-xs font-bold text-white">الهوية البصرية والرمزية</span>
+                            <p class="text-[10px] text-gray-400">انقر لتحديث هويتك البصرية سحابياً فوراً.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="space-y-1">
+                            <label class="text-[10px] text-gray-400 font-bold">الاسم الفني والشهرة:</label>
+                            <input type="text" id="adm-artist-name" class="w-full bg-black/40 border border-gray-900 p-3.5 rounded-xl text-xs text-white focus:outline-none focus:border-purple-600">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[10px] text-gray-400 font-bold">البيان الفني القصير (Bio):</label>
+                            <textarea id="adm-artist-bio" rows="2" class="w-full bg-black/40 border border-gray-900 p-3.5 rounded-xl text-xs text-white focus:outline-none focus:border-purple-600 resize-none"></textarea>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-gray-900/60">
+                            <div class="space-y-1">
+                                <label class="text-[10px] text-gray-400 font-bold"><i class="fas fa-font ml-1 text-purple-400"></i> نوع الخط بالمنصة:</label>
+                                <select id="adm-font-style" class="w-full bg-black/80 border border-gray-900 p-3 rounded-xl text-xs text-gray-300 focus:outline-none focus:border-purple-600">
+                                    <option value="font-cairo">خط القاهرة (هندسي عصري)</option>
+                                    <option value="font-kufi">خط ريم كوفي (فاخر تقليدي)</option>
+                                </select>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[10px] text-gray-400 font-bold"><i class="fas fa-chart-bar ml-1 text-purple-400"></i> معرّف التحليلات (Analytics ID):</label>
+                                <input type="text" id="adm-analytics-id" placeholder="مثال: G-XXXXXX أو Pixel" class="w-full bg-black/40 border border-gray-900 p-3 rounded-xl text-xs text-white focus:outline-none focus:border-purple-600 text-left" dir="ltr">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button id="btn-save-firestore" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-black py-4 rounded-xl shadow-lg active:scale-98 transition flex items-center justify-center gap-2 cursor-pointer">
+                        <i class="fas fa-cloud-upload-alt"></i> حفظ ومزامنة التغييرات لايف بالكامل
+                    </button>
+                </div>
+            </div>
+
+            <div id="desktop-preview-container" class="hidden lg:flex lg:col-span-5 flex flex-col items-center justify-center bg-gray-950/20 border border-gray-950 rounded-[2rem] p-6 shadow-xl relative">
+                <span class="text-[10px] font-black text-gray-500 mb-4 tracking-widest"><i class="fas fa-desktop ml-1"></i> معاينة شاشة العرض الحية للكمبيوتر</span>
+                <div id="preview-phone-frame" class="w-full max-w-[280px] aspect-[9/18] rounded-[2.5rem] p-6 overflow-y-auto scrollbar-none flex flex-col justify-between space-y-6 border-4 border-gray-900 shadow-2xl bg-luxury-dark">
+                    <div class="space-y-6 text-center">
+                        <div class="w-16 h-16 mx-auto rounded-full ring-2 ring-purple-500 overflow-hidden shadow-md">
+                            <img id="prev-avatar" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400" alt="Avatar" class="w-full h-full object-cover">
+                        </div>
+                        <div class="space-y-1">
+                            <h2 id="prev-name" class="text-sm font-black text-white">RYLO</h2>
+                            <p id="prev-bio" class="text-gray-400 text-[10px] leading-relaxed line-clamp-3">جاري جلب البيانات السحابية...</p>
+                        </div>
+                        <div id="prev-links-container" class="space-y-2 w-full"></div>
+                    </div>
+                    <div class="text-center text-[9px] text-gray-600 tracking-wider">ARTPULSE VIP</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="public-view" class="hidden w-full max-w-sm border border-gray-900 rounded-[2.5rem] p-6 shadow-2xl text-center space-y-8 bg-luxury-dark min-h-[520px] flex flex-col justify-between mx-auto">
+            <div class="space-y-6">
+                <div class="w-20 h-20 mx-auto rounded-full ring-4 ring-purple-600/30 shadow-xl overflow-hidden">
+                    <img id="pub-avatar" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400" class="w-full h-full object-cover" alt="Artist Profile">
+                </div>
+                <div class="space-y-1.5">
+                    <h1 id="pub-name" class="text-xl font-black text-white">RYLO</h1>
+                    <p id="pub-bio" class="text-gray-300 text-xs max-w-xs mx-auto leading-relaxed font-light px-2">مرحباً بك في ساحتي الإبداعية الرقمية 🎵</p>
+                </div>
+                <div id="pub-links-container" class="space-y-2.5 w-full pt-2"></div>
+            </div>
+            <div class="pt-4 text-[9px] text-gray-500 flex items-center justify-center gap-1">
+                <span>بواسطة</span> <span class="text-purple-400 font-bold tracking-wider">ArtPulse VIP</span>
+            </div>
+        </section>
+
+    </main>
+
+    <button id="mobile-preview-toggle" class="lg:hidden fixed bottom-20 left-4 z-50 bg-purple-600 text-white w-12 h-12 rounded-full shadow-2xl flex items-center justify-center text-sm active:scale-90 transition cursor-pointer">
+        <i class="fas fa-eye"></i>
+    </button>
+
+    <nav id="app-bottom-bar" class="hidden fixed bottom-0 left-0 right-0 bg-gray-950/95 border-t border-gray-900/60 h-16 flex items-center justify-around z-40 backdrop-blur-md px-2 shadow-xl rounded-t-2xl">
+        <button onclick="switchAppTab('links-tab', this)" class="flex flex-col items-center justify-center gap-1 text-purple-400 transition w-16 cursor-pointer">
+            <i class="fas fa-link text-base"></i> <span class="text-[9px] font-bold">الروابط</span>
+        </button>
+        <button onclick="switchAppTab('design-tab', this)" class="flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-white transition w-16 cursor-pointer">
+            <i class="fas fa-palette text-base"></i> <span class="text-[9px] font-bold">التصميم</span>
+        </button>
+        <button onclick="switchAppTab('info-tab', this)" class="flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-white transition w-16 cursor-pointer">
+            <i class="fas fa-user-cog text-base"></i> <span class="text-[9px] font-bold">الملف والإعدادات</span>
+        </button>
+    </nav>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+
+        // 🛡️ إصلاح مسار الاستيراد الديناميكي الصحيح لحزمة الـ Firestore لمنع توقف المحرك
+        const db_mod = await import("https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js");
+        const getFirestore = db_mod.getFirestore;
+        const doc = db_mod.doc;
+        const setDoc = db_mod.setDoc;
+        const getDoc = db_mod.getDoc;
+        const collection = db_mod.collection;
+        const query = db_mod.query;
+        const where = db_mod.where;
+        const getDocs = db_mod.getDocs;
+
+        const SECURE_ENV_CONFIG = {
+            apiKey: String("AIzaSyDMm44Yk4kIKQkfatAfN9P4FLOhp9SpNDI"),
+            authDomain: "musicboost-6d6fe.firebaseapp.com",
+            databaseURL: "https://musicboost-6d6fe-default-rtdb.firebaseio.com",
+            projectId: "musicboost-6d6fe",
+            storageBucket: "musicboost-6d6fe.firebasestorage.app",
+            messagingSenderId: "1072403823276",
+            appId: "1:1072403823276:web:7bb5e7aa7668494bf23d09"
+        };
+
+        const app = initializeApp(SECURE_ENV_CONFIG);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // 🔗 السيرفر الوسيط الآمن
+        const PHP_UPLOAD_URL = "upload.php";
+
+        let artistState = {
+            uid: "", name: "RYLO", bio: "مرحباً بك في ساحتي الإبداعية الرقمية 🎵",
+            wallpaperClass: "bg-luxury-dark", btnFX: "fx-solid", btnShape: "rounded-xl", fontStyle: "font-cairo",
+            avatarUrl: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400",
+            profileId: "", email: "", analyticsId: "", links: []
+        };
+
+        let isMobilePreviewing = false;
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            let bgStyle = type === 'error' ? 'bg-red-950/95 border-red-500 text-red-200' : 'bg-emerald-950/95 border-emerald-500 text-emerald-200';
+            toast.className = `flex items-center gap-3 px-4 py-3 border rounded-xl text-xs font-semibold shadow-xl backdrop-blur-md w-full transition duration-300 ${bgStyle}`;
+            toast.innerHTML = `<span class="flex-grow">${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.remove(); }, 3000);
+        }
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const publicProfileId = urlParams.get('id');
+
+            if (publicProfileId) {
+                document.getElementById('app-bottom-bar').classList.add('hidden');
+                document.getElementById('mobile-preview-toggle').classList.add('hidden');
+                await loadPublicProfile(publicProfileId);
+            } else {
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        document.getElementById('admin-top-actions').classList.remove('hidden');
+                        document.getElementById('app-bottom-bar').classList.remove('hidden');
+                        await loadArtistAdminData(user);
+                        showView('admin-view');
+                    } else {
+                        document.getElementById('admin-top-actions').classList.add('hidden');
+                        document.getElementById('app-bottom-bar').classList.add('hidden');
+                        showView('home-view');
+                    }
+                    hideLoading();
+                });
+            }
+        });
+
+        document.getElementById('btn-google-login').addEventListener('click', async () => {
+            const provider = new GoogleAuthProvider();
+            try {
+                const result = await signInWithPopup(auth, provider);
+                await loadArtistAdminData(result.user);
+                showView('admin-view');
+            } catch (error) {
+                showToast("فشل التحقق عبر جوجل", "error");
+            }
+        });
+
+        async function loadArtistAdminData(user) {
+            artistState.uid = user.uid;
+            artistState.email = user.email;
+
+            const q = query(collection(db, "pages"), where("uid", "==", user.uid));
+            const querySnapshot = await getDocs(q);
+
+            if (!querySnapshot.empty) {
+                artistState = { ...artistState, ...querySnapshot.docs[0].data() };
+            } else {
+                artistState.profileId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
+                artistState.name = user.displayName || "RYLO";
+                artistState.avatarUrl = user.photoURL || artistState.avatarUrl;
+                await setDoc(doc(db, "pages", artistState.profileId), artistState);
+            }
+            
+            document.getElementById('adm-artist-name').value = artistState.name;
+            document.getElementById('adm-artist-bio').value = artistState.bio;
+            document.getElementById('adm-font-style').value = artistState.fontStyle || "font-cairo";
+            document.getElementById('adm-analytics-id').value = artistState.analyticsId || "";
+            document.getElementById('adm-generated-url').innerText = `${window.location.origin}/?id=${artistState.profileId}`;
+            syncAllViews();
+        }
+
+        document.getElementById('avatar-file-input').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            try {
+                document.getElementById('loading-text').innerText = "جاري رفع الصورة بأمان عبر الخادم الفني...";
+                document.getElementById('loading-screen').classList.remove('hidden');
+
+                const formData = new FormData();
+                formData.append("file", file);
+
+                const response = await fetch(PHP_UPLOAD_URL, { method: "POST", body: formData });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    console.error("PHP Mediator / Cloudinary Error Details:", data);
+                    throw new Error(data.error?.message || "فشل السيرفر في معالجة طلب الرفع");
+                }
+
+                if (data.secure_url) {
+                    artistState.avatarUrl = data.secure_url;
+                    await setDoc(doc(db, "pages", artistState.profileId), artistState);
+                    syncAllViews();
+                    hideLoading();
+                    showToast('تم الرفع المشفر وتحديث الهوية البصرية بنجاح! 📸');
+                } else {
+                    throw new Error("الرد لا يحتوي على رابط عرض مباشر secure_url");
+                }
+            } catch (err) {
+                hideLoading();
+                showToast(err.message || 'فشل الاتصال بالخادم الوسيط، تأكد من وجود ملف upload.php', 'error');
+                console.error("Upload Catch Error:", err);
+            } finally {
+                document.getElementById('loading-text').innerText = "جاري تحميل الاستوديو الرقمي المشفر...";
+            }
+        });
+
+        document.getElementById('btn-add-link').addEventListener('click', () => {
+            const title = document.getElementById('adm-link-title');
+            const url = document.getElementById('adm-link-url');
+            const icon = document.getElementById('adm-link-icon');
+            const isFeatured = document.getElementById('adm-link-featured').checked;
+
+            if(!title.value || !url.value) return showToast('برجاء إدخال البيانات كاملة للرابط', 'error');
+
+            artistState.links.push({ 
+                id: Date.now(), 
+                title: title.value, 
+                url: url.value,
+                icon: icon.value,
+                featured: isFeatured
+            });
+            
+            title.value = ''; url.value = ''; icon.value = 'fa-bolt';
+            document.getElementById('adm-link-featured').checked = false;
+            showToast('تمت إضافة وتثبيت الرابط بنجاح', 'success');
+            syncAllViews();
+        });
+
+        document.getElementById('btn-save-firestore').addEventListener('click', async () => {
+            try {
+                await setDoc(doc(db, "pages", artistState.profileId), artistState);
+                showToast('تم حفظ ومزامنة البيانات سحابياً بنجاح! 🚀');
+            } catch (e) {
+                showToast('فشل في حفظ البيانات التعديلية.', 'error');
+            }
+        });
+
+        async function loadPublicProfile(profileId) {
+            const docSnap = await getDoc(doc(db, "pages", profileId));
+            if (docSnap.exists()) {
+                artistState = { ...artistState, ...docSnap.data() };
+                syncAllViews();
+                showView('public-view');
+            } else {
+                document.body.innerHTML = `<div class='min-h-screen flex items-center justify-center text-xs text-red-400 font-bold'>الحساب المطلوب غير متاح حالياً.</div>`;
+            }
+            hideLoading();
+        }
+
+        document.getElementById('btn-logout').addEventListener('click', () => {
+            signOut(auth).then(() => { window.location.search = ""; });
+        });
+
+        document.getElementById('adm-artist-name').addEventListener('input', (e) => { artistState.name = e.target.value; syncAllViews(); });
+        document.getElementById('adm-artist-bio').addEventListener('input', (e) => { artistState.bio = e.target.value; syncAllViews(); });
+        document.getElementById('adm-font-style').addEventListener('change', (e) => { artistState.fontStyle = e.target.value; syncAllViews(); });
+        document.getElementById('adm-analytics-id').addEventListener('input', (e) => { artistState.analyticsId = e.target.value; });
+
+        document.getElementById('wp-luxury').addEventListener('click', () => { artistState.wallpaperClass = 'bg-luxury-dark'; syncAllViews(); });
+        document.getElementById('wp-studio').addEventListener('click', () => { artistState.wallpaperClass = 'bg-studio'; syncAllViews(); });
+        document.getElementById('wp-neon').addEventListener('click', () => { artistState.wallpaperClass = 'bg-neon-pulse'; syncAllViews(); });
+        document.getElementById('wp-gold').addEventListener('click', () => { artistState.wallpaperClass = 'bg-gold-glow'; syncAllViews(); });
+        document.getElementById('wp-vip-sauvage').addEventListener('click', () => { artistState.wallpaperClass = 'bg-vip-sauvage'; syncAllViews(); });
+        document.getElementById('wp-vip-cyber').addEventListener('click', () => { artistState.wallpaperClass = 'bg-vip-cyber'; syncAllViews(); });
+
+        document.getElementById('fx-btn-solid').addEventListener('click', () => { artistState.btnFX = 'fx-solid'; syncAllViews(); });
+        document.getElementById('fx-btn-glass').addEventListener('click', () => { artistState.btnFX = 'fx-glass'; syncAllViews(); });
+        document.getElementById('fx-btn-neon').addEventListener('click', () => { artistState.btnFX = 'fx-neon'; syncAllViews(); });
+
+        document.getElementById('shape-btn-none').addEventListener('click', () => { artistState.btnShape = 'rounded-none'; syncAllViews(); });
+        document.getElementById('shape-btn-xl').addEventListener('click', () => { artistState.btnShape = 'rounded-xl'; syncAllViews(); });
+        document.getElementById('shape-btn-full').addEventListener('click', () => { artistState.btnShape = 'rounded-full'; syncAllViews(); });
+
+        window.deleteLink = function(id) {
+            artistState.links = artistState.links.filter(l => l.id !== id);
+            syncAllViews();
+        };
+
+        window.switchAppTab = function(tabId, btnElement) {
+            isMobilePreviewing = false;
+            document.getElementById('mobile-preview-toggle').innerHTML = `<i class="fas fa-eye"></i>`;
+            document.getElementById('mobile-preview-toggle').className = "lg:hidden fixed bottom-20 left-4 z-50 bg-purple-600 text-white w-12 h-12 rounded-full shadow-2xl flex items-center justify-center text-sm active:scale-90 transition cursor-pointer";
+            
+            showView('admin-view');
+            
+            const contents = document.getElementsByClassName('app-tab-content');
+            for(let i=0; i<contents.length; i++) { contents[i].classList.add('hidden'); }
+            document.getElementById(tabId).classList.remove('hidden');
+
+            document.querySelectorAll('#app-bottom-bar button').forEach(btn => {
+                btn.classList.remove('text-purple-400'); btn.classList.add('text-gray-400');
+            });
+            if(btnElement) {
+                btnElement.classList.remove('text-gray-400'); btnElement.classList.add('text-purple-400');
+            }
+        };
+
+        document.getElementById('mobile-preview-toggle').addEventListener('click', () => {
+            const toggleBtn = document.getElementById('mobile-preview-toggle');
+            if(!isMobilePreviewing) {
+                showView('public-view');
+                toggleBtn.innerHTML = `<i class="fas fa-edit"></i>`;
+                toggleBtn.className = "lg:hidden fixed bottom-20 left-4 z-50 bg-indigo-600 text-white w-12 h-12 rounded-full shadow-2xl flex items-center justify-center text-sm active:scale-90 transition cursor-pointer";
+                isMobilePreviewing = true;
+            } else {
+                showView('admin-view');
+                toggleBtn.innerHTML = `<i class="fas fa-eye"></i>`;
+                toggleBtn.className = "lg:hidden fixed bottom-20 left-4 z-50 bg-purple-600 text-white w-12 h-12 rounded-full shadow-2xl flex items-center justify-center text-sm active:scale-90 transition cursor-pointer";
+                isMobilePreviewing = false;
+            }
+        });
+
+        document.getElementById('btn-copy-link').addEventListener('click', () => {
+            navigator.clipboard.writeText(`${window.location.origin}/?id=${artistState.profileId}`);
+            showToast('تم نسخ الرابط المباشر بنجاح');
+        });
+
+        function syncAllViews() {
+            const phoneFrame = document.getElementById('preview-phone-frame');
+            const publicFrame = document.getElementById('public-view');
+            const currentFontClass = artistState.fontStyle || 'font-cairo';
+
+            document.body.className = `min-h-screen relative flex flex-col justify-between overflow-x-hidden pb-20 lg:pb-0 ${currentFontClass}`;
+
+            document.getElementById('prev-name').innerText = artistState.name;
+            document.getElementById('prev-bio').innerText = artistState.bio;
+            document.getElementById('pub-name').innerText = artistState.name;
+            document.getElementById('pub-bio').innerText = artistState.bio;
+
+            document.getElementById('adm-avatar-preview').src = artistState.avatarUrl;
+            document.getElementById('prev-avatar').src = artistState.avatarUrl;
+            document.getElementById('pub-avatar').src = artistState.avatarUrl;
+            
+            if(phoneFrame) {
+                phoneFrame.style.background = ''; 
+                phoneFrame.style.backgroundImage = '';
+                phoneFrame.classList.remove('bg-luxury-dark', 'bg-studio', 'bg-neon-pulse', 'bg-gold-glow', 'bg-vip-sauvage', 'bg-vip-cyber');
+                phoneFrame.classList.add(artistState.wallpaperClass);
+            }
+            
+            if(publicFrame) {
+                publicFrame.style.background = '';
+                publicFrame.style.backgroundImage = '';
+                publicFrame.classList.remove('bg-luxury-dark', 'bg-studio', 'bg-neon-pulse', 'bg-gold-glow', 'bg-vip-sauvage', 'bg-vip-cyber');
+                publicFrame.classList.add(artistState.wallpaperClass);
+            }
+
+            const adminList = document.getElementById('admin-links-list');
+            adminList.innerHTML = '';
+            artistState.links.forEach(link => {
+                const hasStar = link.featured ? `<i class="fas fa-star text-amber-400 ml-1"></i>` : '';
+                adminList.innerHTML += `
+                    <div class="flex items-center justify-between bg-black/40 p-3.5 border border-gray-900 rounded-xl text-[11px]">
+                        <span class="text-gray-300 truncate max-w-[70%] flex items-center gap-1">
+                            <i class="fab ${link.icon || 'fa-bolt'} text-purple-400"></i> ${hasStar} ${link.title}
+                        </span>
+                        <button onclick="deleteLink(${link.id})" class="text-red-400 hover:text-red-500 px-2 cursor-pointer"><i class="far fa-trash-alt"></i></button>
+                    </div>
+                `;
+            });
+
+            const prevContainer = document.getElementById('prev-links-container');
+            if(prevContainer) {
+                prevContainer.innerHTML = '';
+                artistState.links.forEach(link => {
+                    const featClass = link.featured ? 'link-featured-glow rounded-xl' : `${artistState.btnShape} ${artistState.btnFX}`;
+                    prevContainer.innerHTML += `
+                        <div class="w-full p-3 text-gray-200 text-[10px] flex items-center justify-between transition-all duration-300 ${featClass}">
+                            <i class="fas fa-angle-left text-[8px] opacity-40"></i> 
+                            <span class="truncate px-1 flex items-center gap-1.5"><i class="fab ${link.icon || 'fa-bolt'} text-[9px]"></i>${link.title}</span> 
+                            <i class="fas fa-bolt opacity-40 text-[9px]"></i>
+                        </div>
+                    `;
+                });
+            }
+
+            const pubContainer = document.getElementById('pub-links-container');
+            pubContainer.innerHTML = '';
+            artistState.links.forEach(link => {
+                const featClass = link.featured ? 'link-featured-glow rounded-xl' : `${artistState.btnShape} ${artistState.btnFX}`;
+                pubContainer.innerHTML += `
+                    <a href="${link.url}" target="_blank" class="w-full p-4 flex items-center justify-between text-white transition-all active:scale-98 shadow-md group ${featClass}">
+                        <i class="fas fa-angle-left text-xs text-gray-400 group-hover:text-purple-400 transition"></i> 
+                        <span class="text-xs font-bold flex items-center gap-2"><i class="fab ${link.icon || 'fa-bolt'} text-sm text-purple-400"></i>${link.title}</span> 
+                        <i class="fas fa-bolt text-purple-500/60 group-hover:text-purple-400"></i>
+                    </a>
+                `;
+            });
+        }
+
+        function showView(viewId) {
+            document.getElementById('home-view').classList.add('hidden');
+            document.getElementById('admin-view').classList.add('hidden');
+            document.getElementById('public-view').classList.add('hidden');
+            document.getElementById(viewId).classList.remove('hidden');
+        }
+
+        function hideLoading() { document.getElementById('loading-screen').classList.add('hidden'); }
+        document.getElementById('adm-avatar-trigger').addEventListener('click', () => { document.getElementById('avatar-file-input').click(); });
+    </script>
+</body>
+</html>
